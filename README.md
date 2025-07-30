@@ -226,12 +226,12 @@ This project is licensed under the MIT License.
 
 ## 👨‍💻 Developer
 
-Developed by [Your Name] - [Your Email]
+Developed by [RDS] - [syncore.rikky@gmail.com]
 
 ## 📞 Support
 
 Untuk pertanyaan atau dukungan, silakan hubungi:
-- Email: support@syncoreapp.com
+- Email: syncore.rikky@gmail.com
 - GitHub Issues: [Create Issue](https://github.com/username/syncoreapp/issues)
 
 ---
