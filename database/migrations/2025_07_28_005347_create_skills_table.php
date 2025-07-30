@@ -21,16 +21,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('employee_skills', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('employee_id')->constrained()->onDelete('cascade');
-            $table->foreignId('skill_id')->constrained()->onDelete('cascade');
-            $table->enum('proficiency_level', ['beginner', 'intermediate', 'advanced', 'expert']);
-            $table->text('notes')->nullable();
-            $table->string('certificate')->nullable(); // Path to skill certificate if any
-            $table->timestamps();
-            $table->softDeletes();
-        });
 
         // Seed skill categories
         DB::table('skill_categories')->insert([
@@ -44,7 +34,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('employee_skills');
         Schema::dropIfExists('skills');
         Schema::dropIfExists('skill_categories');
     }

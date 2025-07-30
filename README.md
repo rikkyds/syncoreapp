@@ -1,66 +1,239 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# SyncoreApp - Sistem Manajemen Karyawan
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi manajemen karyawan berbasis web yang dibangun dengan Laravel 10 untuk mengelola data karyawan, absensi, gaji, dokumen, dan berbagai aspek HR lainnya.
 
-## About Laravel
+## 🚀 Fitur Utama
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Manajemen Master Data
+- **Perusahaan**: Kelola data perusahaan
+- **Kantor Cabang**: Manajemen kantor cabang per perusahaan
+- **Unit Kerja**: Organisasi unit kerja per kantor cabang
+- **Jabatan**: Master data jabatan/posisi
+- **Pengguna & Role**: Sistem autentikasi dengan role-based access
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Manajemen Karyawan
+- **Data Karyawan**: Profil lengkap karyawan dengan foto dan dokumen
+- **Informasi Pribadi**: Data personal, kontak, dan keluarga
+- **Informasi Kepegawaian**: Status, jabatan, unit kerja
+- **Dokumen**: Upload dan manajemen dokumen karyawan
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Sistem Absensi
+- **Absensi Harian**: Pencatatan kehadiran dengan GPS tracking
+- **Jadwal Shift**: Manajemen shift kerja karyawan
+- **Perhitungan Otomatis**: Jam kerja, lembur, keterlambatan
+- **Verifikasi Supervisor**: Sistem approval absensi
 
-## Learning Laravel
+### Manajemen Gaji
+- **Slip Gaji**: Generate slip gaji bulanan
+- **Komponen Gaji**: Gaji pokok, tunjangan, potongan
+- **Perhitungan Lembur**: Otomatis berdasarkan jam kerja
+- **Riwayat Pembayaran**: Tracking pembayaran gaji
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Sistem Cuti & Izin
+- **Pengajuan Cuti**: Form pengajuan dengan approval workflow
+- **Jenis Cuti**: Tahunan, sakit, melahirkan, dll
+- **Saldo Cuti**: Tracking sisa cuti karyawan
+- **Riwayat Cuti**: Laporan cuti per karyawan
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## 🛠️ Teknologi yang Digunakan
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Backend**: Laravel 10.x
+- **Frontend**: Blade Templates + Tailwind CSS
+- **Database**: MySQL
+- **Authentication**: Laravel Breeze
+- **File Upload**: Laravel Storage
+- **JavaScript**: Vanilla JS untuk interaktivitas
 
-## Laravel Sponsors
+## 📋 Persyaratan Sistem
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+- PHP >= 8.1
+- Composer
+- Node.js & NPM
+- MySQL >= 5.7
+- Web Server (Apache/Nginx)
 
-### Premium Partners
+## 🔧 Instalasi
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+1. **Clone Repository**
+   ```bash
+   git clone https://github.com/username/syncoreapp.git
+   cd syncoreapp
+   ```
 
-## Contributing
+2. **Install Dependencies**
+   ```bash
+   composer install
+   npm install
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+3. **Environment Setup**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
 
-## Code of Conduct
+4. **Database Configuration**
+   Edit file `.env` dan sesuaikan konfigurasi database:
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=syncoreapp
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+5. **Database Migration & Seeding**
+   ```bash
+   php artisan migrate
+   php artisan db:seed
+   ```
 
-## Security Vulnerabilities
+6. **Build Assets**
+   ```bash
+   npm run build
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+7. **Storage Link**
+   ```bash
+   php artisan storage:link
+   ```
 
-## License
+8. **Run Application**
+   ```bash
+   php artisan serve
+   ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 👤 Default Login
+
+Setelah seeding, gunakan akun berikut untuk login:
+
+- **Email**: admin@example.com
+- **Password**: password
+- **Role**: Administrator
+
+## 📁 Struktur Project
+
+```
+syncoreapp/
+├── app/
+│   ├── Http/Controllers/     # Controllers
+│   ├── Models/              # Eloquent Models
+│   ├── Console/Commands/    # Artisan Commands
+│   └── Http/Middleware/     # Custom Middleware
+├── database/
+│   ├── migrations/          # Database Migrations
+│   └── seeders/            # Database Seeders
+├── resources/
+│   ├── views/              # Blade Templates
+│   ├── css/                # Stylesheets
+│   └── js/                 # JavaScript Files
+├── routes/
+│   └── web.php             # Web Routes
+└── public/                 # Public Assets
+```
+
+## 🔐 Sistem Role & Permission
+
+### Roles Available:
+- **Admin**: Full access ke semua fitur
+- **HR**: Akses manajemen karyawan dan HR
+- **Manager**: Akses approval dan laporan
+- **Employee**: Akses terbatas untuk data pribadi
+
+### Middleware:
+- `CheckRole`: Validasi role user untuk akses controller
+
+## 📊 Database Schema
+
+### Core Tables:
+- `users` - Data pengguna sistem
+- `roles` - Master role/peran
+- `companies` - Data perusahaan
+- `branch_offices` - Kantor cabang
+- `work_units` - Unit kerja
+- `positions` - Jabatan
+- `employees` - Data karyawan
+
+### HR Tables:
+- `employee_attendances` - Absensi karyawan
+- `employee_shifts` - Jadwal shift
+- `employee_salaries` - Data gaji
+- `employee_leaves` - Cuti karyawan
+- `employee_documents` - Dokumen karyawan
+- `employee_allowances` - Tunjangan karyawan
+
+## 🌟 Fitur Unggulan
+
+### 1. GPS Tracking Absensi
+- Otomatis mendapatkan koordinat lokasi saat absen
+- Validasi lokasi kerja
+- Tracking IP address untuk keamanan
+
+### 2. Auto-Calculate Features
+- Perhitungan jam kerja otomatis
+- Deteksi keterlambatan dan pulang cepat
+- Kalkulasi gaji dengan komponen lengkap
+
+### 3. Document Management
+- Upload dokumen dengan validasi format
+- Kategorisasi dokumen per jenis
+- Sistem akses level (public/private/confidential)
+
+### 4. Responsive Design
+- Interface yang mobile-friendly
+- Tailwind CSS untuk styling modern
+- User experience yang optimal
+
+## 🔄 Development Workflow
+
+### Git Workflow:
+```bash
+# Create feature branch
+git checkout -b feature/nama-fitur
+
+# Commit changes
+git add .
+git commit -m "feat: deskripsi fitur"
+
+# Push to repository
+git push origin feature/nama-fitur
+```
+
+### Database Changes:
+```bash
+# Create migration
+php artisan make:migration create_table_name
+
+# Run migration
+php artisan migrate
+
+# Create seeder
+php artisan make:seeder TableSeeder
+```
+
+## 📝 Contributing
+
+1. Fork repository
+2. Create feature branch
+3. Commit changes
+4. Push to branch
+5. Create Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+## 👨‍💻 Developer
+
+Developed by [Your Name] - [Your Email]
+
+## 📞 Support
+
+Untuk pertanyaan atau dukungan, silakan hubungi:
+- Email: support@syncoreapp.com
+- GitHub Issues: [Create Issue](https://github.com/username/syncoreapp/issues)
+
+---
+
+**SyncoreApp** - Solusi Manajemen Karyawan Modern 🚀

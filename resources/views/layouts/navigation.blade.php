@@ -13,36 +13,36 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        Dashboard
                     </x-nav-link>
 
-                    @if(!auth()->user()->role->name === 'admin')
+                    @if(auth()->user()->role && auth()->user()->role->name !== 'admin')
                         <x-nav-link :href="route('employees.index')" :active="request()->routeIs('employees.*')">
-                            {{ __('Employees') }}
+                            Karyawan
                         </x-nav-link>
                     @endif
 
-                    @if(auth()->user()->role->name === 'admin')
+                    @if(auth()->user()->role && auth()->user()->role->name === 'admin')
                         <!-- Settings Group -->
                         <x-nav-dropdown :active="request()->routeIs(['users.*', 'roles.*', 'companies.*', 'branch-offices.*', 'work-units.*'])">
                             <x-slot name="trigger">
-                                {{ __('Settings') }}
+                                Pengaturan
                             </x-slot>
                             <x-slot name="content">
                                 <x-nav-dropdown-link :href="route('users.index')" :active="request()->routeIs('users.*')">
-                                    {{ __('Users Management') }}
+                                    Manajemen Pengguna
                                 </x-nav-dropdown-link>
                                 <x-nav-dropdown-link :href="route('roles.index')" :active="request()->routeIs('roles.*')">
-                                    {{ __('Roles Management') }}
+                                    Manajemen Role
                                 </x-nav-dropdown-link>
                                 <x-nav-dropdown-link :href="route('companies.index')" :active="request()->routeIs('companies.*')">
-                                    {{ __('Companies') }}
+                                    Perusahaan
                                 </x-nav-dropdown-link>
                                 <x-nav-dropdown-link :href="route('branch-offices.index')" :active="request()->routeIs('branch-offices.*')">
-                                    {{ __('Branch Offices') }}
+                                    Kantor Cabang
                                 </x-nav-dropdown-link>
                                 <x-nav-dropdown-link :href="route('work-units.index')" :active="request()->routeIs('work-units.*')">
-                                    {{ __('Work Units') }}
+                                    Unit Kerja
                                 </x-nav-dropdown-link>
                             </x-slot>
                         </x-nav-dropdown>
@@ -50,52 +50,70 @@
                         <!-- Employee Group -->
                         <x-nav-dropdown :active="request()->routeIs(['employees.*', 'positions.*'])">
                             <x-slot name="trigger">
-                                {{ __('Employee') }}
+                                Karyawan
                             </x-slot>
                             <x-slot name="content">
                                 <x-nav-dropdown-link :href="route('employees.index')" :active="request()->routeIs('employees.*')">
-                                    {{ __('Employee List') }}
+                                    Daftar Karyawan
                                 </x-nav-dropdown-link>
                                 <x-nav-dropdown-link :href="route('positions.index')" :active="request()->routeIs('positions.*')">
-                                    {{ __('Positions') }}
+                                    Jabatan
+                                </x-nav-dropdown-link>
+                                <x-nav-dropdown-link :href="route('employee-leaves.index')" :active="request()->routeIs('employee-leaves.*')">
+                                    Cuti Karyawan
+                                </x-nav-dropdown-link>
+                                <x-nav-dropdown-link :href="route('employee-shifts.index')" :active="request()->routeIs('employee-shifts.*')">
+                                    Jadwal Shift
+                                </x-nav-dropdown-link>
+                                <x-nav-dropdown-link :href="route('employee-allowances.index')" :active="request()->routeIs('employee-allowances.*')">
+                                    Tunjangan Karyawan
+                                </x-nav-dropdown-link>
+                                <x-nav-dropdown-link :href="route('employee-salaries.index')" :active="request()->routeIs('employee-salaries.*')">
+                                    Gaji Karyawan
+                                </x-nav-dropdown-link>
+                                <x-nav-dropdown-link :href="route('employee-documents.index')" :active="request()->routeIs('employee-documents.*')">
+                                    Dokumen Karyawan
+                                </x-nav-dropdown-link>
+                                <x-nav-dropdown-link :href="route('employee-attendances.index')" :active="request()->routeIs('employee-attendances.*')">
+                                    Absensi Karyawan
                                 </x-nav-dropdown-link>
                             </x-slot>
                         </x-nav-dropdown>
                     @endif
 
-                    @if(auth()->user()->role->name === 'hrd')
+                    @if(auth()->user()->role && auth()->user()->role->name === 'hrd')
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('hrd.*')">
-                            {{ __('HRD Dashboard') }}
+                            Dashboard HRD
                         </x-nav-link>
                         <x-nav-link :href="route('employees.index')" :active="request()->routeIs('employees.*')">
-                            {{ __('Employee Management') }}
+                            Manajemen Karyawan
                         </x-nav-link>
                     @endif
 
-                    @if(auth()->user()->role->name === 'kepala_unit')
+                    @if(auth()->user()->role && auth()->user()->role->name === 'kepala_unit')
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('unit.*')">
-                            {{ __('Unit Dashboard') }}
+                            Dashboard Unit
                         </x-nav-link>
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('reports.*')">
-                            {{ __('Unit Reports') }}
+                            Laporan Unit
                         </x-nav-link>
                     @endif
 
-                    @if(auth()->user()->role->name === 'keuangan')
+                    @if(auth()->user()->role && auth()->user()->role->name === 'keuangan')
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('finance.*')">
-                            {{ __('Finance Dashboard') }}
+                            Dashboard Keuangan
                         </x-nav-link>
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('transactions.*')">
-                            {{ __('Financial Transactions') }}
+                            Transaksi Keuangan
                         </x-nav-link>
                     @endif
 
-                    @if(auth()->user()->role->name === 'karyawan')
+                    @if(auth()->user()->role && auth()->user()->role->name === 'karyawan')
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('attendance.*')">
-                            {{ __('Attendance') }}
+                            Absensi
                         </x-nav-link>
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('leaves.*')">
-                            {{ __('Leave Requests') }}
+                            Pengajuan Cuti
                         </x-nav-link>
                     @endif
                 </div>
@@ -118,7 +136,7 @@
 
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
+                            Profil
                         </x-dropdown-link>
 
                         <!-- Authentication -->
@@ -128,7 +146,7 @@
                             <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                {{ __('Log Out') }}
+                                Keluar
                             </x-dropdown-link>
                         </form>
                     </x-slot>
@@ -151,45 +169,47 @@
             <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
                 <div class="pt-2 pb-3 space-y-1">
                     <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        Dashboard
                     </x-responsive-nav-link>
                     
                     <!-- Employee Management -->
                     <x-responsive-nav-link :href="route('employees.index')" :active="request()->routeIs('employees.*')">
-                        {{ __('Employees') }}
-                    </x-responsive-nav-link>            @if(auth()->user()->role->name === 'admin')
+                        Karyawan
+                    </x-responsive-nav-link>
+                    
+                    @if(auth()->user()->role && auth()->user()->role->name === 'admin')
                 <!-- Settings Group -->
                 <div class="pt-2 pb-1 border-t border-gray-200 dark:border-gray-600">
                     <div class="px-4">
-                        <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ __('Settings') }}</div>
+                        <div class="font-medium text-base text-gray-800 dark:text-gray-200">Pengaturan</div>
                     </div>
                     <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
-                        {{ __('Users Management') }}
+                        Manajemen Pengguna
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.*')">
-                        {{ __('Roles Management') }}
+                        Manajemen Role
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('companies.index')" :active="request()->routeIs('companies.*')">
-                        {{ __('Companies') }}
+                        Perusahaan
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('branch-offices.index')" :active="request()->routeIs('branch-offices.*')">
-                        {{ __('Branch Offices') }}
+                        Kantor Cabang
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('work-units.index')" :active="request()->routeIs('work-units.*')">
-                        {{ __('Work Units') }}
+                        Unit Kerja
                     </x-responsive-nav-link>
                 </div>
 
                 <!-- Employee Group -->
                 <div class="pt-2 pb-1 border-t border-gray-200 dark:border-gray-600">
                     <div class="px-4">
-                        <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ __('Employee') }}</div>
+                        <div class="font-medium text-base text-gray-800 dark:text-gray-200">Karyawan</div>
                     </div>
                     <x-responsive-nav-link :href="route('employees.index')" :active="request()->routeIs('employees.*')">
-                        {{ __('Employee List') }}
+                        Daftar Karyawan
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('positions.index')" :active="request()->routeIs('positions.*')">
-                        {{ __('Positions') }}
+                        Jabatan
                     </x-responsive-nav-link>
                 </div>
             @endif
@@ -204,7 +224,7 @@
 
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
+                    Profil
                 </x-responsive-nav-link>
 
                 <!-- Authentication -->
@@ -214,7 +234,7 @@
                     <x-responsive-nav-link :href="route('logout')"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                        Keluar
                     </x-responsive-nav-link>
                 </form>
             </div>

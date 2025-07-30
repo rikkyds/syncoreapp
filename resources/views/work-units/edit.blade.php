@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Edit Work Unit') }}
+            Edit Unit Kerja
         </h2>
     </x-slot>
 
@@ -14,12 +14,12 @@
                         @method('PUT')
 
                         <div>
-                            <x-input-label for="branch_office_id" :value="__('Branch Office')" />
+                            <x-input-label for="branch_office_id" value="Kantor Cabang" />
                             <select id="branch_office_id" name="branch_office_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
-                                <option value="">{{ __('Select Branch Office') }}</option>
+                                <option value="">Pilih Kantor Cabang</option>
                                 @foreach($branchOffices as $office)
                                     <option value="{{ $office->id }}" {{ old('branch_office_id', $workUnit->branch_office_id) == $office->id ? 'selected' : '' }}>
-                                        {{ $office->company->name }} - {{ $office->name }}
+                                        {{ $office->company ? $office->company->name : 'Tidak ada perusahaan' }} - {{ $office->name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -27,32 +27,32 @@
                         </div>
 
                         <div>
-                            <x-input-label for="name" :value="__('Name')" />
+                            <x-input-label for="name" value="Nama" />
                             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $workUnit->name)" required />
                             <x-input-error class="mt-2" :messages="$errors->get('name')" />
                         </div>
 
                         <div>
-                            <x-input-label for="address" :value="__('Address')" />
-                            <x-textarea-input id="address" name="address" class="mt-1 block w-full" required>{{ old('address', $workUnit->address) }}</x-textarea-input>
+                            <x-input-label for="address" value="Alamat" />
+                            <textarea id="address" name="address" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>{{ old('address', $workUnit->address) }}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('address')" />
                         </div>
 
                         <div>
-                            <x-input-label for="phone" :value="__('Phone')" />
+                            <x-input-label for="phone" value="Telepon" />
                             <x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone', $workUnit->phone)" required />
                             <x-input-error class="mt-2" :messages="$errors->get('phone')" />
                         </div>
 
                         <div>
-                            <x-input-label for="email" :value="__('Email')" />
+                            <x-input-label for="email" value="Email" />
                             <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $workUnit->email)" required />
                             <x-input-error class="mt-2" :messages="$errors->get('email')" />
                         </div>
 
                         <div class="flex items-center gap-4">
-                            <x-primary-button>{{ __('Update') }}</x-primary-button>
-                            <a href="{{ route('work-units.index') }}" class="text-gray-600">{{ __('Cancel') }}</a>
+                            <x-primary-button>Perbarui</x-primary-button>
+                            <a href="{{ route('work-units.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-300 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-400 focus:bg-gray-400 active:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">Batal</a>
                         </div>
                     </form>
                 </div>

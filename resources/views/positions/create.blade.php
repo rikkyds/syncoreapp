@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Create New Position') }}
+            Tambah Jabatan Baru
         </h2>
     </x-slot>
 
@@ -13,23 +13,23 @@
                         @csrf
 
                         <div class="mb-4">
-                            <x-input-label for="name" value="Position Name" />
+                            <x-input-label for="name" value="Nama Jabatan" />
                             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" required />
                             <x-input-error class="mt-2" :messages="$errors->get('name')" />
                         </div>
 
                         <div class="mb-4">
-                            <x-input-label for="description" value="Description" />
+                            <x-input-label for="description" value="Deskripsi" />
                             <textarea id="description" name="description" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"></textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('description')" />
                         </div>
 
                         <div class="flex items-center justify-end mt-4">
                             <x-secondary-button onclick="window.history.back()" type="button" class="mr-3">
-                                {{ __('Cancel') }}
+                                Batal
                             </x-secondary-button>
                             <x-primary-button>
-                                {{ __('Create Position') }}
+                                Tambah Jabatan
                             </x-primary-button>
                         </div>
                     </form>

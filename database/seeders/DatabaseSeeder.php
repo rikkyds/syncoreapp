@@ -18,6 +18,9 @@ class DatabaseSeeder extends Seeder
         
         // Create master data
         $this->call(MasterDataSeeder::class);
+        
+        // Create skills data
+        $this->call(SkillSeeder::class);
 
         // Get role IDs
         $adminRole = Role::where('name', 'admin')->first();

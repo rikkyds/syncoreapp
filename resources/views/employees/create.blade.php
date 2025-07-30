@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Create New Employee') }}
+            Tambah Karyawan Baru
         </h2>
     </x-slot>
 
@@ -13,11 +13,11 @@
                         @csrf
 
                         <div class="mb-6">
-                            <h3 class="text-lg font-semibold mb-4">Personal Information</h3>
+                            <h3 class="text-lg font-semibold mb-4">Informasi Pribadi</h3>
                             
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
-                                    <x-input-label for="full_name" value="Full Name" />
+                                    <x-input-label for="full_name" value="Nama Lengkap" />
                                     <x-text-input id="full_name" name="full_name" type="text" class="mt-1 block w-full" required />
                                     <x-input-error class="mt-2" :messages="$errors->get('full_name')" />
                                 </div>
@@ -29,57 +29,57 @@
                                 </div>
 
                                 <div>
-                                    <x-input-label for="ktp_photo" value="KTP Photo" />
+                                    <x-input-label for="ktp_photo" value="Foto KTP" />
                                     <input type="file" id="ktp_photo" name="ktp_photo" class="mt-1 block w-full" />
                                     <x-input-error class="mt-2" :messages="$errors->get('ktp_photo')" />
                                 </div>
 
                                 <div>
-                                    <x-input-label for="birth_place" value="Birth Place" />
+                                    <x-input-label for="birth_place" value="Tempat Lahir" />
                                     <x-text-input id="birth_place" name="birth_place" type="text" class="mt-1 block w-full" required />
                                     <x-input-error class="mt-2" :messages="$errors->get('birth_place')" />
                                 </div>
 
                                 <div>
-                                    <x-input-label for="birth_date" value="Birth Date" />
+                                    <x-input-label for="birth_date" value="Tanggal Lahir" />
                                     <x-text-input id="birth_date" name="birth_date" type="date" class="mt-1 block w-full" required />
                                     <x-input-error class="mt-2" :messages="$errors->get('birth_date')" />
                                 </div>
 
                                 <div>
-                                    <x-input-label for="gender" value="Gender" />
+                                    <x-input-label for="gender" value="Jenis Kelamin" />
                                     <select id="gender" name="gender" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
-                                        <option value="male">Male</option>
-                                        <option value="female">Female</option>
+                                        <option value="male">Laki-laki</option>
+                                        <option value="female">Perempuan</option>
                                     </select>
                                     <x-input-error class="mt-2" :messages="$errors->get('gender')" />
                                 </div>
 
                                 <div>
-                                    <x-input-label for="marital_status" value="Marital Status" />
+                                    <x-input-label for="marital_status" value="Status Pernikahan" />
                                     <select id="marital_status" name="marital_status" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
-                                        <option value="single">Single</option>
-                                        <option value="married">Married</option>
-                                        <option value="divorced">Divorced</option>
-                                        <option value="widowed">Widowed</option>
+                                        <option value="single">Belum Menikah</option>
+                                        <option value="married">Menikah</option>
+                                        <option value="divorced">Bercerai</option>
+                                        <option value="widowed">Janda/Duda</option>
                                     </select>
                                     <x-input-error class="mt-2" :messages="$errors->get('marital_status')" />
                                 </div>
 
                                 <div class="col-span-2">
-                                    <x-input-label for="address" value="Address" />
+                                    <x-input-label for="address" value="Alamat" />
                                     <textarea id="address" name="address" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required></textarea>
                                     <x-input-error class="mt-2" :messages="$errors->get('address')" />
                                 </div>
 
                                 <div>
-                                    <x-input-label for="phone_number" value="Phone Number" />
+                                    <x-input-label for="phone_number" value="Nomor Telepon" />
                                     <x-text-input id="phone_number" name="phone_number" type="text" class="mt-1 block w-full" required />
                                     <x-input-error class="mt-2" :messages="$errors->get('phone_number')" />
                                 </div>
 
                                 <div>
-                                    <x-input-label for="personal_email" value="Personal Email" />
+                                    <x-input-label for="personal_email" value="Email Pribadi" />
                                     <x-text-input id="personal_email" name="personal_email" type="email" class="mt-1 block w-full" required />
                                     <x-input-error class="mt-2" :messages="$errors->get('personal_email')" />
                                 </div>
@@ -87,35 +87,35 @@
                         </div>
 
                         <div class="mb-6">
-                            <h3 class="text-lg font-semibold mb-4">Insurance & Financial Information</h3>
+                            <h3 class="text-lg font-semibold mb-4">Informasi Asuransi & Keuangan</h3>
                             
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
-                                    <x-input-label for="bpjs_health" value="BPJS Health" />
+                                    <x-input-label for="bpjs_health" value="BPJS Kesehatan" />
                                     <x-text-input id="bpjs_health" name="bpjs_health" type="text" class="mt-1 block w-full" />
                                     <x-input-error class="mt-2" :messages="$errors->get('bpjs_health')" />
                                 </div>
 
                                 <div>
-                                    <x-input-label for="bpjs_health_photo" value="BPJS Health Card Photo" />
+                                    <x-input-label for="bpjs_health_photo" value="Foto Kartu BPJS Kesehatan" />
                                     <input type="file" id="bpjs_health_photo" name="bpjs_health_photo" class="mt-1 block w-full" />
                                     <x-input-error class="mt-2" :messages="$errors->get('bpjs_health_photo')" />
                                 </div>
 
                                 <div>
-                                    <x-input-label for="bpjs_employment" value="BPJS Employment" />
+                                    <x-input-label for="bpjs_employment" value="BPJS Ketenagakerjaan" />
                                     <x-text-input id="bpjs_employment" name="bpjs_employment" type="text" class="mt-1 block w-full" />
                                     <x-input-error class="mt-2" :messages="$errors->get('bpjs_employment')" />
                                 </div>
 
                                 <div>
-                                    <x-input-label for="bank_name" value="Bank Name" />
+                                    <x-input-label for="bank_name" value="Nama Bank" />
                                     <x-text-input id="bank_name" name="bank_name" type="text" class="mt-1 block w-full" />
                                     <x-input-error class="mt-2" :messages="$errors->get('bank_name')" />
                                 </div>
 
                                 <div>
-                                    <x-input-label for="bank_account" value="Bank Account Number" />
+                                    <x-input-label for="bank_account" value="Nomor Rekening Bank" />
                                     <x-text-input id="bank_account" name="bank_account" type="text" class="mt-1 block w-full" />
                                     <x-input-error class="mt-2" :messages="$errors->get('bank_account')" />
                                 </div>
@@ -127,7 +127,7 @@
                                 </div>
 
                                 <div>
-                                    <x-input-label for="npwp_photo" value="NPWP Photo" />
+                                    <x-input-label for="npwp_photo" value="Foto NPWP" />
                                     <input type="file" id="npwp_photo" name="npwp_photo" class="mt-1 block w-full" />
                                     <x-input-error class="mt-2" :messages="$errors->get('npwp_photo')" />
                                 </div>
@@ -135,17 +135,17 @@
                         </div>
 
                         <div class="mb-6">
-                            <h3 class="text-lg font-semibold mb-4">Company Information</h3>
+                            <h3 class="text-lg font-semibold mb-4">Informasi Perusahaan</h3>
                             
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
-                                    <x-input-label for="employee_id" value="Employee ID (NIP)" />
+                                    <x-input-label for="employee_id" value="ID Karyawan (NIP)" />
                                     <x-text-input id="employee_id" name="employee_id" type="text" class="mt-1 block w-full" required />
                                     <x-input-error class="mt-2" :messages="$errors->get('employee_id')" />
                                 </div>
 
                                 <div>
-                                    <x-input-label for="work_unit_id" value="Work Unit" />
+                                    <x-input-label for="work_unit_id" value="Unit Kerja" />
                                     <select id="work_unit_id" name="work_unit_id" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
                                         @foreach($workUnits as $workUnit)
                                             <option value="{{ $workUnit->id }}">{{ $workUnit->name }}</option>
@@ -155,7 +155,7 @@
                                 </div>
 
                                 <div>
-                                    <x-input-label for="position_id" value="Position" />
+                                    <x-input-label for="position_id" value="Jabatan" />
                                     <select id="position_id" name="position_id" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
                                         @foreach($positions as $position)
                                             <option value="{{ $position->id }}">{{ $position->name }}</option>
@@ -165,24 +165,24 @@
                                 </div>
 
                                 <div>
-                                    <x-input-label for="employment_status" value="Employment Status" />
+                                    <x-input-label for="employment_status" value="Status Kepegawaian" />
                                     <select id="employment_status" name="employment_status" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
-                                        <option value="permanent">Permanent</option>
-                                        <option value="contract">Contract</option>
-                                        <option value="probation">Probation</option>
-                                        <option value="intern">Intern</option>
+                                        <option value="permanent">Tetap</option>
+                                        <option value="contract">Kontrak</option>
+                                        <option value="probation">Masa Percobaan</option>
+                                        <option value="intern">Magang</option>
                                     </select>
                                     <x-input-error class="mt-2" :messages="$errors->get('employment_status')" />
                                 </div>
 
                                 <div>
-                                    <x-input-label for="join_date" value="Join Date" />
+                                    <x-input-label for="join_date" value="Tanggal Bergabung" />
                                     <x-text-input id="join_date" name="join_date" type="date" class="mt-1 block w-full" required />
                                     <x-input-error class="mt-2" :messages="$errors->get('join_date')" />
                                 </div>
 
                                 <div>
-                                    <x-input-label for="company_id" value="Company" />
+                                    <x-input-label for="company_id" value="Perusahaan" />
                                     <select id="company_id" name="company_id" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
                                         @foreach(App\Models\Company::all() as $company)
                                             <option value="{{ $company->id }}">{{ $company->name }}</option>
@@ -192,7 +192,7 @@
                                 </div>
 
                                 <div>
-                                    <x-input-label for="branch_office_id" value="Branch Office" />
+                                    <x-input-label for="branch_office_id" value="Kantor Cabang" />
                                     <select id="branch_office_id" name="branch_office_id" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
                                         @foreach(App\Models\BranchOffice::all() as $branch)
                                             <option value="{{ $branch->id }}">{{ $branch->name }}</option>
@@ -205,10 +205,10 @@
 
                         <div class="flex items-center justify-end mt-6">
                             <x-secondary-button onclick="window.history.back()" type="button" class="mr-3">
-                                {{ __('Cancel') }}
+                                Batal
                             </x-secondary-button>
                             <x-primary-button>
-                                {{ __('Create Employee') }}
+                                Tambah Karyawan
                             </x-primary-button>
                         </div>
                     </form>

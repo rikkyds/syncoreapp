@@ -102,4 +102,34 @@ class Employee extends Model
     {
         return $this->hasMany(FamilyMember::class)->where('is_emergency_contact', true);
     }
+
+    public function leaves()
+    {
+        return $this->hasMany(EmployeeLeave::class);
+    }
+
+    public function shifts()
+    {
+        return $this->hasMany(EmployeeShift::class);
+    }
+
+    public function allowances()
+    {
+        return $this->hasMany(EmployeeAllowance::class);
+    }
+
+    public function salaries()
+    {
+        return $this->hasMany(EmployeeSalary::class);
+    }
+
+    public function documents()
+    {
+        return $this->hasMany(EmployeeDocument::class);
+    }
+
+    public function attendances()
+    {
+        return $this->hasMany(EmployeeAttendance::class);
+    }
 }

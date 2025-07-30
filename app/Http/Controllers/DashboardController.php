@@ -9,10 +9,16 @@ class DashboardController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $view = 'dashboards.' . $user->role->name;
         
-        // Fallback to default dashboard if view doesn't exist
-        if (!view()->exists($view)) {
+        // Check if user has a role
+        if ($user->role && $user->role->name) {
+            $view = 'dashboards.' . $user->role->name;
+            
+            // Fallback to default dashboard if view doesn't exist
+            if (!view()->exists($view)) {
+                $view = 'dashboard';
+            }
+        } else {
             $view = 'dashboard';
         }
         
