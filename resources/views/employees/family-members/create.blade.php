@@ -1,30 +1,62 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Add Family Member') }}
-        </h2>
+        <div class="flex justify-between items-center">
+            <div>
+                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                    Tambah Anggota Keluarga
+                </h2>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                    Tambah data anggota keluarga untuk {{ $employee->full_name }}
+                </p>
+            </div>
+        </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    <form action="{{ route('employees.family-members.store', $employee) }}" method="POST">
+    <div class="py-6">
+        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg sm:rounded-xl">
+                <div class="p-6">
+                    <form action="{{ route('employees.family-members.store', $employee) }}" method="POST" class="space-y-6">
                         @csrf
                         
+                        <!-- Employee Info Card -->
+                        <div class="bg-gradient-to-r from-orange-50 to-red-50 dark:from-gray-700 dark:to-gray-600 rounded-lg p-4 mb-6">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-900 dark:text-white">{{ $employee->full_name }}</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ $employee->employee_id }} - {{ $employee->position->name }}</p>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Full Name -->
                             <div>
-                                <x-input-label for="full_name" value="Full Name" />
-                                <x-text-input id="full_name" name="full_name" type="text" class="mt-1 block w-full" :value="old('full_name')" required />
-                                <x-input-error :messages="$errors->get('full_name')" class="mt-2" />
+                                <label for="full_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Nama Lengkap <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" id="full_name" name="full_name" 
+                                       value="{{ old('full_name') }}" required
+                                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 dark:bg-gray-700 dark:text-white"
+                                       placeholder="Contoh: Ahmad Suryadi">
+                                @error('full_name')
+                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                @enderror
                             </div>
 
                             <!-- Relationship -->
                             <div>
-                                <x-input-label for="relationship" value="Relationship" />
-                                <select id="relationship" name="relationship" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
-                                    <option value="">Select Relationship</option>
+                                <label for="relationship" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Hubungan Keluarga <span class="text-red-500">*</span>
+                                </label>
+                                <select id="relationship" name="relationship" required
+                                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 dark:bg-gray-700 dark:text-white">
+                                    <option value="">Pilih Hubungan Keluarga</option>
                                     <option value="father" {{ old('relationship') == 'father' ? 'selected' : '' }}>Ayah</option>
                                     <option value="mother" {{ old('relationship') == 'mother' ? 'selected' : '' }}>Ibu</option>
                                     <option value="spouse" {{ old('relationship') == 'spouse' ? 'selected' : '' }}>Suami/Istri</option>
@@ -36,61 +68,75 @@
                                     <option value="mother_in_law" {{ old('relationship') == 'mother_in_law' ? 'selected' : '' }}>Ibu Mertua</option>
                                     <option value="other" {{ old('relationship') == 'other' ? 'selected' : '' }}>Lainnya</option>
                                 </select>
-                                <x-input-error :messages="$errors->get('relationship')" class="mt-2" />
+                                @error('relationship')
+                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                @enderror
                             </div>
 
                             <!-- Other Relationship -->
                             <div id="otherRelationshipField" class="hidden">
-                                <x-input-label for="other_relationship" value="Specify Relationship" />
-                                <x-text-input id="other_relationship" name="other_relationship" type="text" class="mt-1 block w-full" :value="old('other_relationship')" />
-                                <x-input-error :messages="$errors->get('other_relationship')" class="mt-2" />
+                                <label for="other_relationship" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Sebutkan Hubungan Keluarga <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" id="other_relationship" name="other_relationship" 
+                                       value="{{ old('other_relationship') }}"
+                                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 dark:bg-gray-700 dark:text-white"
+                                       placeholder="Contoh: Sepupu, Keponakan">
+                                @error('other_relationship')
+                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                @enderror
                             </div>
 
                             <!-- Birth Place -->
                             <div>
-                                <x-input-label for="birth_place" value="Birth Place" />
-                                <x-text-input id="birth_place" name="birth_place" type="text" class="mt-1 block w-full" :value="old('birth_place')" required />
-                                <x-input-error :messages="$errors->get('birth_place')" class="mt-2" />
+                                <label for="birth_place" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Tempat Lahir <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" id="birth_place" name="birth_place" 
+                                       value="{{ old('birth_place') }}" required
+                                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 dark:bg-gray-700 dark:text-white"
+                                       placeholder="Contoh: Jakarta">
+                                @error('birth_place')
+                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                @enderror
                             </div>
 
                             <!-- Birth Date -->
                             <div>
-                                <x-input-label for="birth_date" value="Birth Date" />
-                                <x-text-input id="birth_date" name="birth_date" type="date" class="mt-1 block w-full" :value="old('birth_date')" required />
-                                <x-input-error :messages="$errors->get('birth_date')" class="mt-2" />
+                                <label for="birth_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Tanggal Lahir <span class="text-red-500">*</span>
+                                </label>
+                                <input type="date" id="birth_date" name="birth_date" 
+                                       value="{{ old('birth_date') }}" required
+                                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 dark:bg-gray-700 dark:text-white">
+                                @error('birth_date')
+                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                @enderror
                             </div>
 
                             <!-- Gender -->
                             <div>
-                                <x-input-label for="gender" value="Gender" />
-                                <select id="gender" name="gender" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                                <label for="gender" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Jenis Kelamin <span class="text-red-500">*</span>
+                                </label>
+                                <select id="gender" name="gender" required
+                                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 dark:bg-gray-700 dark:text-white">
                                     <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Laki-laki</option>
                                     <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Perempuan</option>
                                 </select>
-                                <x-input-error :messages="$errors->get('gender')" class="mt-2" />
-                            </div>
-
-                            <!-- Is Alive -->
-                            <div>
-                                <div class="flex items-center mt-4">
-                                    <input type="hidden" name="is_alive" value="0">
-                                    <input id="is_alive" type="checkbox" name="is_alive" value="1" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" {{ old('is_alive', '1') == '1' ? 'checked' : '' }}>
-                                    <label for="is_alive" class="ml-2 block text-sm text-gray-900">Masih Hidup</label>
-                                </div>
-                            </div>
-
-                            <!-- Death Date -->
-                            <div id="deathDateField" class="hidden">
-                                <x-input-label for="death_date" value="Death Date" />
-                                <x-text-input id="death_date" name="death_date" type="date" class="mt-1 block w-full" :value="old('death_date')" />
-                                <x-input-error :messages="$errors->get('death_date')" class="mt-2" />
+                                @error('gender')
+                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                @enderror
                             </div>
 
                             <!-- Education Level -->
                             <div>
-                                <x-input-label for="education_level" value="Education Level (Optional)" />
-                                <select id="education_level" name="education_level" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                                    <option value="">Select Education Level</option>
+                                <label for="education_level" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Tingkat Pendidikan (Opsional)
+                                </label>
+                                <select id="education_level" name="education_level" 
+                                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 dark:bg-gray-700 dark:text-white">
+                                    <option value="">Pilih Tingkat Pendidikan</option>
                                     <option value="sd" {{ old('education_level') == 'sd' ? 'selected' : '' }}>SD</option>
                                     <option value="smp" {{ old('education_level') == 'smp' ? 'selected' : '' }}>SMP</option>
                                     <option value="sma" {{ old('education_level') == 'sma' ? 'selected' : '' }}>SMA</option>
@@ -103,76 +149,144 @@
                                     <option value="s2" {{ old('education_level') == 's2' ? 'selected' : '' }}>S2</option>
                                     <option value="s3" {{ old('education_level') == 's3' ? 'selected' : '' }}>S3</option>
                                 </select>
-                                <x-input-error :messages="$errors->get('education_level')" class="mt-2" />
+                                @error('education_level')
+                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                @enderror
                             </div>
 
                             <!-- Occupation -->
                             <div>
-                                <x-input-label for="occupation" value="Occupation (Optional)" />
-                                <x-text-input id="occupation" name="occupation" type="text" class="mt-1 block w-full" :value="old('occupation')" />
-                                <x-input-error :messages="$errors->get('occupation')" class="mt-2" />
-                            </div>
-
-                            <!-- Financial Dependent -->
-                            <div>
-                                <div class="flex items-center mt-4">
-                                    <input type="hidden" name="is_financial_dependent" value="0">
-                                    <input id="is_financial_dependent" type="checkbox" name="is_financial_dependent" value="1" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" {{ old('is_financial_dependent') == '1' ? 'checked' : '' }}>
-                                    <label for="is_financial_dependent" class="ml-2 block text-sm text-gray-900">Tanggungan Finansial</label>
-                                </div>
+                                <label for="occupation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Pekerjaan (Opsional)
+                                </label>
+                                <input type="text" id="occupation" name="occupation" 
+                                       value="{{ old('occupation') }}"
+                                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 dark:bg-gray-700 dark:text-white"
+                                       placeholder="Contoh: Guru, Dokter, Ibu Rumah Tangga">
+                                @error('occupation')
+                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                @enderror
                             </div>
 
                             <!-- Marital Status -->
                             <div>
-                                <x-input-label for="marital_status" value="Marital Status (Optional)" />
-                                <select id="marital_status" name="marital_status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                                    <option value="">Select Marital Status</option>
+                                <label for="marital_status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Status Pernikahan (Opsional)
+                                </label>
+                                <select id="marital_status" name="marital_status" 
+                                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 dark:bg-gray-700 dark:text-white">
+                                    <option value="">Pilih Status Pernikahan</option>
                                     <option value="single" {{ old('marital_status') == 'single' ? 'selected' : '' }}>Belum Menikah</option>
                                     <option value="married" {{ old('marital_status') == 'married' ? 'selected' : '' }}>Menikah</option>
                                     <option value="divorced" {{ old('marital_status') == 'divorced' ? 'selected' : '' }}>Cerai</option>
                                     <option value="widowed" {{ old('marital_status') == 'widowed' ? 'selected' : '' }}>Janda/Duda</option>
                                 </select>
-                                <x-input-error :messages="$errors->get('marital_status')" class="mt-2" />
-                            </div>
-
-                            <!-- Emergency Contact -->
-                            <div>
-                                <div class="flex items-center mt-4">
-                                    <input type="hidden" name="is_emergency_contact" value="0">
-                                    <input id="is_emergency_contact" type="checkbox" name="is_emergency_contact" value="1" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" {{ old('is_emergency_contact') == '1' ? 'checked' : '' }}>
-                                    <label for="is_emergency_contact" class="ml-2 block text-sm text-gray-900">Kontak Darurat</label>
-                                </div>
+                                @error('marital_status')
+                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                @enderror
                             </div>
 
                             <!-- Phone Number -->
                             <div>
-                                <x-input-label for="phone_number" value="Phone Number (Optional)" />
-                                <x-text-input id="phone_number" name="phone_number" type="text" class="mt-1 block w-full" :value="old('phone_number')" />
-                                <x-input-error :messages="$errors->get('phone_number')" class="mt-2" />
+                                <label for="phone_number" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Nomor Telepon (Opsional)
+                                </label>
+                                <input type="text" id="phone_number" name="phone_number" 
+                                       value="{{ old('phone_number') }}"
+                                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 dark:bg-gray-700 dark:text-white"
+                                       placeholder="Contoh: +62 812 3456 7890">
+                                @error('phone_number')
+                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                @enderror
                             </div>
 
                             <!-- Email -->
                             <div>
-                                <x-input-label for="email" value="Email (Optional)" />
-                                <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email')" />
-                                <x-input-error :messages="$errors->get('email')" class="mt-2" />
-                            </div>
-
-                            <!-- Address -->
-                            <div class="md:col-span-2">
-                                <x-input-label for="address" value="Address (Optional)" />
-                                <textarea id="address" name="address" rows="3" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">{{ old('address') }}</textarea>
-                                <x-input-error :messages="$errors->get('address')" class="mt-2" />
+                                <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Email (Opsional)
+                                </label>
+                                <input type="email" id="email" name="email" 
+                                       value="{{ old('email') }}"
+                                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 dark:bg-gray-700 dark:text-white"
+                                       placeholder="Contoh: email@example.com">
+                                @error('email')
+                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
 
-                        <div class="mt-6 flex justify-end">
-                            <x-secondary-button type="button" onclick="window.history.back()" class="mr-3">
-                                Cancel
-                            </x-secondary-button>
-                            <x-primary-button>
-                                Save Family Member
-                            </x-primary-button>
+                        <!-- Status Checkboxes -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <!-- Is Alive -->
+                            <div class="flex items-center">
+                                <input type="hidden" name="is_alive" value="0">
+                                <input id="is_alive" type="checkbox" name="is_alive" value="1" 
+                                       class="rounded border-gray-300 text-orange-600 shadow-sm focus:ring-orange-500" 
+                                       {{ old('is_alive', '1') == '1' ? 'checked' : '' }}>
+                                <label for="is_alive" class="ml-2 text-sm text-gray-700 dark:text-gray-300">Masih Hidup</label>
+                            </div>
+
+                            <!-- Financial Dependent -->
+                            <div class="flex items-center">
+                                <input type="hidden" name="is_financial_dependent" value="0">
+                                <input id="is_financial_dependent" type="checkbox" name="is_financial_dependent" value="1" 
+                                       class="rounded border-gray-300 text-orange-600 shadow-sm focus:ring-orange-500" 
+                                       {{ old('is_financial_dependent') == '1' ? 'checked' : '' }}>
+                                <label for="is_financial_dependent" class="ml-2 text-sm text-gray-700 dark:text-gray-300">Tanggungan Finansial</label>
+                            </div>
+
+                            <!-- Emergency Contact -->
+                            <div class="flex items-center">
+                                <input type="hidden" name="is_emergency_contact" value="0">
+                                <input id="is_emergency_contact" type="checkbox" name="is_emergency_contact" value="1" 
+                                       class="rounded border-gray-300 text-orange-600 shadow-sm focus:ring-orange-500" 
+                                       {{ old('is_emergency_contact') == '1' ? 'checked' : '' }}>
+                                <label for="is_emergency_contact" class="ml-2 text-sm text-gray-700 dark:text-gray-300">Kontak Darurat</label>
+                            </div>
+                        </div>
+
+                        <!-- Death Date -->
+                        <div id="deathDateField" class="hidden">
+                            <label for="death_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Tanggal Meninggal <span class="text-red-500">*</span>
+                            </label>
+                            <input type="date" id="death_date" name="death_date" 
+                                   value="{{ old('death_date') }}"
+                                   class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 dark:bg-gray-700 dark:text-white">
+                            @error('death_date')
+                                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Address -->
+                        <div>
+                            <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Alamat (Opsional)
+                            </label>
+                            <textarea id="address" name="address" rows="3"
+                                      class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 dark:bg-gray-700 dark:text-white"
+                                      placeholder="Masukkan alamat lengkap...">{{ old('address') }}</textarea>
+                            @error('address')
+                                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex justify-end space-x-3 pt-6 border-t border-gray-200 dark:border-gray-700">
+                            <a href="{{ route('employees.show', $employee) }}" 
+                               class="inline-flex items-center px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white font-medium rounded-lg transition-colors duration-200">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                                Batal
+                            </a>
+                            <button type="submit" 
+                                    class="inline-flex items-center px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-lg transition-colors duration-200">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                Simpan Data Keluarga
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -192,10 +306,12 @@
 
             function toggleOtherRelationship() {
                 otherRelationshipField.classList.toggle('hidden', relationshipSelect.value !== 'other');
+                const otherInput = document.querySelector('#other_relationship');
                 if (relationshipSelect.value === 'other') {
-                    document.querySelector('#other_relationship').setAttribute('required', 'required');
+                    otherInput.setAttribute('required', 'required');
                 } else {
-                    document.querySelector('#other_relationship').removeAttribute('required');
+                    otherInput.removeAttribute('required');
+                    otherInput.value = '';
                 }
             }
 
@@ -213,8 +329,10 @@
             function togglePhoneRequired() {
                 if (isEmergencyContactCheckbox.checked) {
                     phoneInput.setAttribute('required', 'required');
+                    phoneInput.parentElement.querySelector('label').innerHTML = 'Nomor Telepon <span class="text-red-500">*</span>';
                 } else {
                     phoneInput.removeAttribute('required');
+                    phoneInput.parentElement.querySelector('label').innerHTML = 'Nomor Telepon (Opsional)';
                 }
             }
 
@@ -222,6 +340,7 @@
             isAliveCheckbox.addEventListener('change', toggleDeathDate);
             isEmergencyContactCheckbox.addEventListener('change', togglePhoneRequired);
 
+            // Initialize states
             toggleOtherRelationship();
             toggleDeathDate();
             togglePhoneRequired();

@@ -13,9 +13,21 @@ Aplikasi manajemen karyawan berbasis web yang dibangun dengan Laravel 10 untuk m
 
 ### Manajemen Karyawan
 - **Data Karyawan**: Profil lengkap karyawan dengan foto dan dokumen
+- **Quick Create Employee**: Form cepat untuk menambah karyawan dengan 3 field utama
+- **Complete Employee Profile**: Form lengkap dengan semua detail karyawan
+- **Auto-Generated Employee ID**: ID karyawan otomatis (EMP0001, EMP0002, dst)
+- **Auto User Account Creation**: Otomatis membuat akun user dengan password default
 - **Informasi Pribadi**: Data personal, kontak, dan keluarga
 - **Informasi Kepegawaian**: Status, jabatan, unit kerja
 - **Dokumen**: Upload dan manajemen dokumen karyawan
+
+### Employee Profile Management
+- **Modern Tab Interface**: Detail karyawan dengan 5 tab terorganisir
+- **Pendidikan**: Riwayat pendidikan dengan sertifikat/ijazah
+- **Keahlian**: Skills dengan tingkat proficiency dan sertifikat
+- **Pengalaman Kerja**: Work experience dengan detail lengkap dan referensi
+- **Data Keluarga**: Informasi keluarga dengan kontak darurat
+- **Interactive Forms**: Form modern dengan conditional fields dan JavaScript
 
 ### Sistem Absensi
 - **Absensi Harian**: Pencatatan kehadiran dengan GPS tracking
@@ -35,6 +47,12 @@ Aplikasi manajemen karyawan berbasis web yang dibangun dengan Laravel 10 untuk m
 - **Saldo Cuti**: Tracking sisa cuti karyawan
 - **Riwayat Cuti**: Laporan cuti per karyawan
 
+### Project Management
+- **Project Tracking**: Manajemen proyek dengan timeline
+- **SIKOJA Integration**: Sistem Kontrol Jasa dengan budget tracking
+- **Support Request**: Sistem tiket dukungan dengan PDF export
+- **PPT & PDK Details**: Detail Pengeluaran Proyek dan Dana Kontrak
+
 ## 🛠️ Teknologi yang Digunakan
 
 - **Backend**: Laravel 10.x
@@ -43,6 +61,7 @@ Aplikasi manajemen karyawan berbasis web yang dibangun dengan Laravel 10 untuk m
 - **Authentication**: Laravel Breeze
 - **File Upload**: Laravel Storage
 - **JavaScript**: Vanilla JS untuk interaktivitas
+- **UI Components**: Modern responsive design dengan dark mode support
 
 ## 📋 Persyaratan Sistem
 
@@ -56,7 +75,7 @@ Aplikasi manajemen karyawan berbasis web yang dibangun dengan Laravel 10 untuk m
 
 1. **Clone Repository**
    ```bash
-   git clone https://github.com/username/syncoreapp.git
+   git clone https://github.com/rikkyds/SyncoreIndonesia.git
    cd syncoreapp
    ```
 
@@ -112,20 +131,54 @@ Setelah seeding, gunakan akun berikut untuk login:
 - **Password**: password
 - **Role**: Administrator
 
+## 🎯 Quick Start Commands
+
+### Create Test User
+```bash
+php artisan create:test-user
+```
+
+### Update User Role
+```bash
+php artisan update:user-role {user_id} {role_name}
+```
+
+### Test Quick Employee Creation
+```bash
+php artisan test:quick-employee
+```
+
 ## 📁 Struktur Project
 
 ```
 syncoreapp/
 ├── app/
 │   ├── Http/Controllers/     # Controllers
+│   │   ├── EmployeeController.php
+│   │   ├── SkillController.php
+│   │   ├── ProjectController.php
+│   │   └── SupportRequestController.php
 │   ├── Models/              # Eloquent Models
+│   │   ├── Employee.php
+│   │   ├── Education.php
+│   │   ├── Skill.php
+│   │   ├── WorkExperience.php
+│   │   └── FamilyMember.php
 │   ├── Console/Commands/    # Artisan Commands
+│   │   ├── CreateTestUser.php
+│   │   ├── UpdateUserRole.php
+│   │   └── TestQuickEmployee.php
 │   └── Http/Middleware/     # Custom Middleware
+│       └── CheckRole.php
 ├── database/
 │   ├── migrations/          # Database Migrations
 │   └── seeders/            # Database Seeders
 ├── resources/
 │   ├── views/              # Blade Templates
+│   │   ├── employees/      # Employee Management Views
+│   │   ├── projects/       # Project Management Views
+│   │   ├── support-requests/ # Support System Views
+│   │   └── layouts/        # Layout Templates
 │   ├── css/                # Stylesheets
 │   └── js/                 # JavaScript Files
 ├── routes/
@@ -139,7 +192,7 @@ syncoreapp/
 - **Admin**: Full access ke semua fitur
 - **HR**: Akses manajemen karyawan dan HR
 - **Manager**: Akses approval dan laporan
-- **Employee**: Akses terbatas untuk data pribadi
+- **Karyawan**: Akses terbatas untuk data pribadi
 
 ### Middleware:
 - `CheckRole`: Validasi role user untuk akses controller
@@ -155,6 +208,13 @@ syncoreapp/
 - `positions` - Jabatan
 - `employees` - Data karyawan
 
+### Employee Related Tables:
+- `educations` - Riwayat pendidikan karyawan
+- `skills` & `skill_categories` - Master keahlian
+- `employee_skills` - Pivot table keahlian karyawan
+- `work_experiences` - Pengalaman kerja
+- `family_members` - Data keluarga karyawan
+
 ### HR Tables:
 - `employee_attendances` - Absensi karyawan
 - `employee_shifts` - Jadwal shift
@@ -163,26 +223,54 @@ syncoreapp/
 - `employee_documents` - Dokumen karyawan
 - `employee_allowances` - Tunjangan karyawan
 
+### Project Management Tables:
+- `projects` - Data proyek
+- `sikojas` - Sistem Kontrol Jasa
+- `support_requests` - Tiket dukungan
+- `ppt_details` - Detail Pengeluaran Proyek
+- `pdk_details` - Detail Dana Kontrak
+
 ## 🌟 Fitur Unggulan
 
-### 1. GPS Tracking Absensi
+### 1. Quick Create Employee
+- Form cepat dengan 3 field utama (Nama, Email, Telepon)
+- Auto-generate Employee ID (EMP0001, EMP0002, dst)
+- Auto-create user account dengan password default 'syncore123'
+- Auto-assign role 'karyawan'
+- Menggunakan default values untuk foreign keys
+
+### 2. Modern Employee Profile
+- Tab interface dengan 5 section: Personal, Education, Skills, Experience, Family
+- Gradient header cards dengan employee photo
+- Interactive forms dengan conditional fields
+- File upload dengan drag & drop interface
+- Real-time form validation
+
+### 3. Indonesian Localization
+- Semua interface menggunakan Bahasa Indonesia
+- Form labels, buttons, dan messages dalam Bahasa Indonesia
+- Status translations (Tetap, Kontrak, Masa Percobaan, Magang)
+- Relationship translations (Ayah, Ibu, Suami/Istri, Anak, dll)
+
+### 4. GPS Tracking Absensi
 - Otomatis mendapatkan koordinat lokasi saat absen
 - Validasi lokasi kerja
 - Tracking IP address untuk keamanan
 
-### 2. Auto-Calculate Features
+### 5. Auto-Calculate Features
 - Perhitungan jam kerja otomatis
 - Deteksi keterlambatan dan pulang cepat
 - Kalkulasi gaji dengan komponen lengkap
 
-### 3. Document Management
+### 6. Document Management
 - Upload dokumen dengan validasi format
 - Kategorisasi dokumen per jenis
 - Sistem akses level (public/private/confidential)
 
-### 4. Responsive Design
+### 7. Responsive Design
 - Interface yang mobile-friendly
 - Tailwind CSS untuk styling modern
+- Dark mode support
 - User experience yang optimal
 
 ## 🔄 Development Workflow
@@ -212,6 +300,29 @@ php artisan migrate
 php artisan make:seeder TableSeeder
 ```
 
+## 🆕 Recent Updates
+
+### v2.0.0 - Employee Management Enhancement
+- ✅ Quick Create Employee feature
+- ✅ Modern employee detail page dengan tab system
+- ✅ Complete Indonesian localization
+- ✅ Enhanced form validation dan error handling
+- ✅ Auto-generated employee IDs
+- ✅ Improved user experience dengan modern UI
+
+### v1.5.0 - Project Management
+- ✅ Project tracking system
+- ✅ SIKOJA integration
+- ✅ Support request system dengan PDF export
+- ✅ Budget tracking dan financial management
+
+### v1.0.0 - Core HR System
+- ✅ Employee management
+- ✅ Attendance system
+- ✅ Payroll management
+- ✅ Leave management
+- ✅ Document management
+
 ## 📝 Contributing
 
 1. Fork repository
@@ -226,13 +337,13 @@ This project is licensed under the MIT License.
 
 ## 👨‍💻 Developer
 
-Developed by [Your Name] - [Your Email]
+Developed by Syncore Indonesia Team
 
 ## 📞 Support
 
 Untuk pertanyaan atau dukungan, silakan hubungi:
-- Email: support@syncoreapp.com
-- GitHub Issues: [Create Issue](https://github.com/username/syncoreapp/issues)
+- Email: syncore.rikky@gmail.com
+- GitHub Issues: [Create Issue](https://github.com/rikkyds/SyncoreIndonesia/issues)
 
 ---
 

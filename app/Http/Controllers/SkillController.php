@@ -12,8 +12,9 @@ class SkillController extends Controller
 {
     public function create(Employee $employee)
     {
+        $skillCategories = SkillCategory::all();
         $skills = Skill::with('category')->get();
-        return view('employees.skills.create', compact('employee', 'skills'));
+        return view('employees.skills.create', compact('employee', 'skillCategories', 'skills'));
     }
 
     public function store(Request $request, Employee $employee)
