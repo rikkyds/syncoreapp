@@ -337,7 +337,7 @@ This project is licensed under the MIT License.
 
 ## 👨‍💻 Developer
 
-Developed by Syncore Indonesia Team
+Developed by Syncore Indonesia Team - RDS (syncore.rikky@gmail.com)
 
 ## 📞 Support
 
