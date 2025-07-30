@@ -79,6 +79,26 @@
                                 </x-nav-dropdown-link>
                             </x-slot>
                         </x-nav-dropdown>
+
+                        <!-- Project Group -->
+                        <x-nav-link :href="route('projects.index')" :active="request()->routeIs('projects.*')">
+                            Proyek
+                        </x-nav-link>
+
+                        <!-- Support Requests Group -->
+                        <x-nav-dropdown :active="request()->routeIs(['support-requests.*', 'projects.sikoja'])">
+                            <x-slot name="trigger">
+                                Formulir
+                            </x-slot>
+                            <x-slot name="content">
+                                <x-nav-dropdown-link :href="route('support-requests.index')" :active="request()->routeIs('support-requests.*')">
+                                    Formulir Pengajuan
+                                </x-nav-dropdown-link>
+                                <x-nav-dropdown-link :href="route('sikojas.index')" :active="request()->routeIs('sikojas.*')">
+                                    Formulir SIKOJA
+                                </x-nav-dropdown-link>
+                            </x-slot>
+                        </x-nav-dropdown>
                     @endif
 
                     @if(auth()->user()->role && auth()->user()->role->name === 'hrd')

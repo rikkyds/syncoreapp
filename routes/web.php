@@ -20,6 +20,9 @@ use App\Http\Controllers\EmployeeAllowanceController;
 use App\Http\Controllers\EmployeeSalaryController;
 use App\Http\Controllers\EmployeeDocumentController;
 use App\Http\Controllers\EmployeeAttendanceController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\SikojaController;
+use App\Http\Controllers\SupportRequestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +55,8 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('work-units', WorkUnitController::class);
         Route::resource('positions', PositionController::class);
         Route::resource('employees', EmployeeController::class);
+        Route::get('employees-quick-create', [EmployeeController::class, 'quickCreate'])->name('employees.quick-create');
+        Route::post('employees-quick-store', [EmployeeController::class, 'quickStore'])->name('employees.quick-store');
         Route::resource('employees.education', EducationController::class)->except(['index', 'show']);
         Route::resource('employees.skills', SkillController::class)->except(['index', 'show']);
         Route::resource('employees.work-experiences', WorkExperienceController::class)->except(['index', 'show']);
@@ -133,6 +138,32 @@ Route::middleware(['auth'])->group(function () {
         Route::get('employee-attendances/monthly', [EmployeeAttendanceController::class, 'getMonthlyAttendance'])->name('employee-attendances.monthly');
         Route::get('employee-attendances-today', [EmployeeAttendanceController::class, 'getTodayAttendance'])->name('employee-attendances.today');
         Route::get('employee-attendances-pending', [EmployeeAttendanceController::class, 'getPendingVerifications'])->name('employee-attendances.pending');
+        
+        // Project Management Routes
+        Route::resource('projects', ProjectController::class);
+        Route::patch('projects/{project}/approve', [ProjectController::class, 'approve'])->name('projects.approve');
+        Route::patch('projects/{project}/reject', [ProjectController::class, 'reject'])->name('projects.reject');
+        Route::patch('projects/{project}/start', [ProjectController::class, 'start'])->name('projects.start');
+        Route::patch('projects/{project}/complete', [ProjectController::class, 'complete'])->name('projects.complete');
+        Route::patch('projects/{project}/update-progress', [ProjectController::class, 'updateProgress'])->name('projects.update-progress');
+        Route::get('projects/{project}/report', [ProjectController::class, 'generateReport'])->name('projects.report');
+        Route::get('projects/{project}/sikoja', [SikojaController::class, 'generateSikoja'])->name('projects.sikoja');
+        
+        // Support Request Routes (Formulir Kebutuhan Pengajuan)
+        Route::resource('support-requests', SupportRequestController::class);
+        Route::patch('support-requests/{supportRequest}/submit', [SupportRequestController::class, 'submit'])->name('support-requests.submit');
+        Route::patch('support-requests/{supportRequest}/approve', [SupportRequestController::class, 'approve'])->name('support-requests.approve');
+        Route::patch('support-requests/{supportRequest}/reject', [SupportRequestController::class, 'reject'])->name('support-requests.reject');
+        Route::get('support-requests/{supportRequest}/export-pdf', [SupportRequestController::class, 'exportPdf'])->name('support-requests.export-pdf');
+        Route::get('support-requests/export-excel', [SupportRequestController::class, 'exportExcel'])->name('support-requests.export-excel');
+        
+        // SIKOJA Routes
+        Route::resource('sikojas', SikojaController::class);
+        Route::patch('sikojas/{sikoja}/submit', [SikojaController::class, 'submit'])->name('sikojas.submit');
+        Route::patch('sikojas/{sikoja}/verify-pmo', [SikojaController::class, 'verifyPmo'])->name('sikojas.verify-pmo');
+        Route::patch('sikojas/{sikoja}/verify-finance', [SikojaController::class, 'verifyFinance'])->name('sikojas.verify-finance');
+        Route::patch('sikojas/{sikoja}/verify-other', [SikojaController::class, 'verifyOther'])->name('sikojas.verify-other');
+        Route::patch('sikojas/{sikoja}/reject', [SikojaController::class, 'reject'])->name('sikojas.reject');
     });
 
     // HRD routes

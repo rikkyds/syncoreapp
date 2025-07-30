@@ -11,9 +11,14 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="text-lg font-semibold">Daftar Karyawan</h3>
-                        <a href="{{ route('employees.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            Tambah Karyawan Baru
-                        </a>
+                        <div class="flex space-x-3">
+                            <a href="{{ route('employees.quick-create') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                                Tambah Karyawan Cepat
+                            </a>
+                            <a href="{{ route('employees.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                Tambah Karyawan Lengkap
+                            </a>
+                        </div>
                     </div>
 
                     <div class="overflow-x-auto">

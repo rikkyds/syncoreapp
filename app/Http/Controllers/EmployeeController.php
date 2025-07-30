@@ -5,8 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use App\Models\Position;
 use App\Models\WorkUnit;
+use App\Models\User;
+use App\Models\Role;
+use App\Models\Company;
+use App\Models\BranchOffice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class EmployeeController extends Controller
@@ -22,7 +28,18 @@ class EmployeeController extends Controller
     {
         $positions = Position::all();
         $workUnits = WorkUnit::all();
-        return view('employees.create', compact('positions', 'workUnits'));
+        $companies = Company::all();
+        $branchOffices = BranchOffice::all();
+        return view('employees.create', compact('positions', 'workUnits', 'companies', 'branchOffices'));
+    }
+
+    /**
+     * Show quick create form for minimal employee data
+     */
+    public function quickCreate()
+    {
+        $defaultRole = Role::where('name', 'karyawan')->first();
+        return view('employees.quick-create', compact('defaultRole'));
     }
 
     public function store(Request $request)
@@ -72,6 +89,90 @@ class EmployeeController extends Controller
 
         return redirect()->route('employees.index')
             ->with('success', 'Employee created successfully.');
+    }
+
+    /**
+     * Store quick employee with minimal data and auto-create user account
+     */
+    public function quickStore(Request $request)
+    {
+        $validated = $request->validate([
+            'full_name' => 'required|string|max:255',
+            'phone_number' => 'required|string|max:20',
+            'personal_email' => 'required|email|unique:users,email|unique:employees,personal_email',
+        ]);
+
+        DB::beginTransaction();
+        
+        try {
+            // Generate employee ID
+            $lastEmployee = Employee::orderBy('id', 'desc')->first();
+            $nextId = $lastEmployee ? $lastEmployee->id + 1 : 1;
+            $employeeId = 'EMP' . str_pad($nextId, 4, '0', STR_PAD_LEFT);
+            
+            // Get default role (karyawan)
+            $defaultRole = Role::where('name', 'karyawan')->first();
+            if (!$defaultRole) {
+                throw new \Exception('Default role "karyawan" not found');
+            }
+
+            // Create user account first
+            $user = User::create([
+                'name' => $validated['full_name'],
+                'email' => $validated['personal_email'],
+                'password' => Hash::make('syncore123'),
+                'role_id' => $defaultRole->id,
+                'email_verified_at' => now(),
+            ]);
+
+            // Get default values for required foreign keys
+            $defaultCompany = Company::first();
+            $defaultBranchOffice = BranchOffice::first();
+            $defaultWorkUnit = WorkUnit::first();
+            $defaultPosition = Position::first();
+            
+            // Create default position if none exists
+            if (!$defaultPosition) {
+                $defaultPosition = Position::create([
+                    'name' => 'Staff',
+                    'description' => 'Default Staff Position'
+                ]);
+            }
+
+            // Create employee with minimal data
+            $employee = Employee::create([
+                'full_name' => $validated['full_name'],
+                'phone_number' => $validated['phone_number'],
+                'personal_email' => $validated['personal_email'],
+                'employee_id' => $employeeId,
+                'user_id' => $user->id,
+                
+                // Set default/placeholder values for required fields
+                'nik' => 'TEMP-' . time(),
+                'birth_place' => 'Belum diisi',
+                'birth_date' => '1990-01-01',
+                'gender' => 'male',
+                'marital_status' => 'single',
+                'address' => 'Belum diisi',
+                'employment_status' => 'probation',
+                'join_date' => now()->toDateString(),
+                
+                // Use default values for required foreign keys
+                'company_id' => $defaultCompany->id,
+                'branch_office_id' => $defaultBranchOffice->id,
+                'work_unit_id' => $defaultWorkUnit->id,
+                'position_id' => $defaultPosition->id,
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('employees.index')
+                ->with('success', 'Karyawan berhasil dibuat! Email: ' . $validated['personal_email'] . ', Password: syncore123. Data lengkap dapat diperbarui nanti.');
+                
+        } catch (\Exception $e) {
+            DB::rollback();
+            return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()]);
+        }
     }
 
     public function show(Employee $employee)
