@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'App\\Console\\Commands\\CreateTestUser' => $baseDir . '/app/Console/Commands/CreateTestUser.php',
     'App\\Console\\Commands\\DemoCommand' => $baseDir . '/app/Console/Commands/DemoCommand.php',
+    'App\\Console\\Commands\\TestQuickEmployee' => $baseDir . '/app/Console/Commands/TestQuickEmployee.php',
     'App\\Console\\Commands\\UpdateUserRole' => $baseDir . '/app/Console/Commands/UpdateUserRole.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',

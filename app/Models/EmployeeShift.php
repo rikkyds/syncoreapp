@@ -65,11 +65,10 @@ class EmployeeShift extends Model
     public static function getShiftNameOptions()
     {
         return [
-            'Shift A' => 'Shift A (Pagi)',
-            'Shift B' => 'Shift B (Siang)',
-            'Shift C' => 'Shift C (Malam)',
-            'Shift Khusus' => 'Shift Khusus',
-            'Shift Lembur' => 'Shift Lembur',
+            'PAGI' => 'PAGI',
+            'SIANG' => 'SIANG',
+            'MALAM' => 'MALAM',
+            'NON SHIFT' => 'NON SHIFT',
         ];
     }
 

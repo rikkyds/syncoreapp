@@ -585,6 +585,7 @@ class ComposerStaticInitbfe12996eeecb6fdc8713a9fd9d431f8
     public static $classMap = array (
         'App\\Console\\Commands\\CreateTestUser' => __DIR__ . '/../..' . '/app/Console/Commands/CreateTestUser.php',
         'App\\Console\\Commands\\DemoCommand' => __DIR__ . '/../..' . '/app/Console/Commands/DemoCommand.php',
+        'App\\Console\\Commands\\TestQuickEmployee' => __DIR__ . '/../..' . '/app/Console/Commands/TestQuickEmployee.php',
         'App\\Console\\Commands\\UpdateUserRole' => __DIR__ . '/../..' . '/app/Console/Commands/UpdateUserRole.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',

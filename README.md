@@ -302,6 +302,17 @@ php artisan make:seeder TableSeeder
 
 ## 🆕 Recent Updates
 
+### v2.1.0 - UI/UX Improvements & Bug Fixes (July 2025)
+- ✅ Perbaikan halaman shift: Mengubah opsi shift menjadi PAGI, SIANG, MALAM, dan NON SHIFT
+- ✅ Penambahan tab Shift Kerja pada halaman detail karyawan
+- ✅ Perbaikan halaman absensi: Metode absensi aktif secara default
+- ✅ Verifikasi supervisor pada absensi hanya muncul jika karyawan terlibat dalam project
+- ✅ Penambahan fitur foto profil karyawan dengan preview
+- ✅ Perbaikan halaman tambah gaji karyawan dengan perhitungan otomatis
+- ✅ Perbaikan halaman dokumen karyawan dengan validasi file
+- ✅ Penambahan halaman detail dan edit dokumen karyawan
+- ✅ Perbaikan teks bahasa Inggris menjadi bahasa Indonesia pada semua halaman
+
 ### v2.0.0 - Employee Management Enhancement
 - ✅ Quick Create Employee feature
 - ✅ Modern employee detail page dengan tab system

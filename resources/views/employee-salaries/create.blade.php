@@ -33,9 +33,9 @@
                             </div>
 
                             <div>
-                                <x-input-label for="employee_nik" value="NIK" />
-                                <x-text-input id="employee_nik" name="employee_nik" type="text" class="mt-1 block w-full" :value="old('employee_nik')" required readonly />
-                                <x-input-error class="mt-2" :messages="$errors->get('employee_nik')" />
+                                <x-input-label for="nip_nik" value="NIK" />
+                                <x-text-input id="nip_nik" name="nip_nik" type="text" class="mt-1 block w-full" :value="old('nip_nik')" required readonly />
+                                <x-input-error class="mt-2" :messages="$errors->get('nip_nik')" />
                             </div>
 
                             <div>
@@ -52,29 +52,15 @@
                             </div>
 
                             <div>
-                                <x-input-label for="work_unit_id" value="Unit Kerja" />
-                                <select id="work_unit_id" name="work_unit_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
-                                    <option value="">Pilih Unit Kerja</option>
-                                    @foreach($workUnits as $unit)
-                                        <option value="{{ $unit->id }}" {{ old('work_unit_id') == $unit->id ? 'selected' : '' }}>
-                                            {{ $unit->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                <x-input-error class="mt-2" :messages="$errors->get('work_unit_id')" />
+                                <x-input-label for="work_unit" value="Unit Kerja" />
+                                <x-text-input id="work_unit" name="work_unit" type="text" class="mt-1 block w-full" :value="old('work_unit')" required readonly />
+                                <x-input-error class="mt-2" :messages="$errors->get('work_unit')" />
                             </div>
 
                             <div>
-                                <x-input-label for="position_id" value="Jabatan" />
-                                <select id="position_id" name="position_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
-                                    <option value="">Pilih Jabatan</option>
-                                    @foreach($positions as $position)
-                                        <option value="{{ $position->id }}" {{ old('position_id') == $position->id ? 'selected' : '' }}>
-                                            {{ $position->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                <x-input-error class="mt-2" :messages="$errors->get('position_id')" />
+                                <x-input-label for="position" value="Jabatan" />
+                                <x-text-input id="position" name="position" type="text" class="mt-1 block w-full" :value="old('position')" required readonly />
+                                <x-input-error class="mt-2" :messages="$errors->get('position')" />
                             </div>
 
                             <div>
@@ -84,9 +70,9 @@
                             </div>
 
                             <div>
-                                <x-input-label for="allowances" value="Tunjangan" />
-                                <x-text-input id="allowances" name="allowances" type="number" step="0.01" class="mt-1 block w-full" :value="old('allowances', 0)" />
-                                <x-input-error class="mt-2" :messages="$errors->get('allowances')" />
+                                <x-input-label for="fixed_allowances" value="Tunjangan Tetap" />
+                                <x-text-input id="fixed_allowances" name="fixed_allowances" type="number" step="0.01" class="mt-1 block w-full" :value="old('fixed_allowances', 0)" />
+                                <x-input-error class="mt-2" :messages="$errors->get('fixed_allowances')" />
                             </div>
 
                             <div>
@@ -96,27 +82,21 @@
                             </div>
 
                             <div>
-                                <x-input-label for="overtime_hours" value="Jam Lembur" />
-                                <x-text-input id="overtime_hours" name="overtime_hours" type="number" step="0.01" class="mt-1 block w-full" :value="old('overtime_hours', 0)" />
-                                <x-input-error class="mt-2" :messages="$errors->get('overtime_hours')" />
+                                <x-input-label for="variable_allowances" value="Tunjangan Variabel" />
+                                <x-text-input id="variable_allowances" name="variable_allowances" type="number" step="0.01" class="mt-1 block w-full" :value="old('variable_allowances', 0)" />
+                                <x-input-error class="mt-2" :messages="$errors->get('variable_allowances')" />
                             </div>
 
                             <div>
-                                <x-input-label for="overtime_rate" value="Tarif Lembur" />
-                                <x-text-input id="overtime_rate" name="overtime_rate" type="number" step="0.01" class="mt-1 block w-full" :value="old('overtime_rate', 0)" />
-                                <x-input-error class="mt-2" :messages="$errors->get('overtime_rate')" />
+                                <x-input-label for="net_salary" value="Total Gaji Bersih" />
+                                <x-text-input id="net_salary" name="net_salary" type="number" step="0.01" class="mt-1 block w-full" :value="old('net_salary')" required readonly />
+                                <x-input-error class="mt-2" :messages="$errors->get('net_salary')" />
                             </div>
 
                             <div>
-                                <x-input-label for="total_salary" value="Total Gaji" />
-                                <x-text-input id="total_salary" name="total_salary" type="number" step="0.01" class="mt-1 block w-full" :value="old('total_salary')" required readonly />
-                                <x-input-error class="mt-2" :messages="$errors->get('total_salary')" />
-                            </div>
-
-                            <div>
-                                <x-input-label for="salary_period" value="Periode Gaji" />
-                                <x-text-input id="salary_period" name="salary_period" type="month" class="mt-1 block w-full" :value="old('salary_period')" required />
-                                <x-input-error class="mt-2" :messages="$errors->get('salary_period')" />
+                                <x-input-label for="salary_date" value="Tanggal Gaji" />
+                                <x-text-input id="salary_date" name="salary_date" type="date" class="mt-1 block w-full" :value="old('salary_date', now()->format('Y-m-d'))" required />
+                                <x-input-error class="mt-2" :messages="$errors->get('salary_date')" />
                             </div>
 
                             <div>
@@ -136,6 +116,12 @@
                                     @endforeach
                                 </select>
                                 <x-input-error class="mt-2" :messages="$errors->get('payment_method')" />
+                            </div>
+                            
+                            <div>
+                                <x-input-label for="account_number" value="Nomor Rekening" />
+                                <x-text-input id="account_number" name="account_number" type="text" class="mt-1 block w-full" :value="old('account_number')" />
+                                <x-input-error class="mt-2" :messages="$errors->get('account_number')" />
                             </div>
 
                             <div>
@@ -172,13 +158,12 @@
         document.addEventListener('DOMContentLoaded', function() {
             const employeeSelect = document.getElementById('employee_id');
             const employeeNameInput = document.getElementById('employee_name');
-            const employeeNikInput = document.getElementById('employee_nik');
+            const employeeNikInput = document.getElementById('nip_nik');
             const basicSalaryInput = document.getElementById('basic_salary');
-            const allowancesInput = document.getElementById('allowances');
+            const fixedAllowancesInput = document.getElementById('fixed_allowances');
+            const variableAllowancesInput = document.getElementById('variable_allowances');
             const deductionsInput = document.getElementById('deductions');
-            const overtimeHoursInput = document.getElementById('overtime_hours');
-            const overtimeRateInput = document.getElementById('overtime_rate');
-            const totalSalaryInput = document.getElementById('total_salary');
+            const netSalaryInput = document.getElementById('net_salary');
 
             const employees = @json($employees);
 
@@ -186,28 +171,32 @@
                 const selectedEmployee = employees.find(emp => emp.id == this.value);
                 if (selectedEmployee) {
                     employeeNameInput.value = selectedEmployee.full_name;
-                    employeeNikInput.value = selectedEmployee.nik;
+                    employeeNikInput.value = selectedEmployee.employee_id + ' / ' + selectedEmployee.nik;
+                    document.getElementById('position').value = selectedEmployee.position ? selectedEmployee.position.name : '';
+                    document.getElementById('work_unit').value = selectedEmployee.work_unit ? selectedEmployee.work_unit.name : '';
+                    document.getElementById('employee_status').value = selectedEmployee.employment_status || 'tetap';
                 } else {
                     employeeNameInput.value = '';
                     employeeNikInput.value = '';
+                    document.getElementById('position').value = '';
+                    document.getElementById('work_unit').value = '';
+                    document.getElementById('employee_status').value = '';
                 }
                 calculateTotal();
             });
 
             function calculateTotal() {
                 const basicSalary = parseFloat(basicSalaryInput.value) || 0;
-                const allowances = parseFloat(allowancesInput.value) || 0;
+                const fixedAllowances = parseFloat(fixedAllowancesInput.value) || 0;
+                const variableAllowances = parseFloat(variableAllowancesInput.value) || 0;
                 const deductions = parseFloat(deductionsInput.value) || 0;
-                const overtimeHours = parseFloat(overtimeHoursInput.value) || 0;
-                const overtimeRate = parseFloat(overtimeRateInput.value) || 0;
                 
-                const overtimePay = overtimeHours * overtimeRate;
-                const total = basicSalary + allowances + overtimePay - deductions;
+                const total = basicSalary + fixedAllowances + variableAllowances - deductions;
                 
-                totalSalaryInput.value = total.toFixed(2);
+                netSalaryInput.value = total.toFixed(2);
             }
 
-            [basicSalaryInput, allowancesInput, deductionsInput, overtimeHoursInput, overtimeRateInput].forEach(input => {
+            [basicSalaryInput, fixedAllowancesInput, variableAllowancesInput, deductionsInput].forEach(input => {
                 input.addEventListener('input', calculateTotal);
             });
         });

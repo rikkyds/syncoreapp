@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\Company;
 use App\Models\BranchOffice;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
@@ -46,6 +47,7 @@ class EmployeeController extends Controller
     {
         $validated = $request->validate([
             'full_name' => 'required|string|max:255',
+            'profile_photo' => 'nullable|image|max:2048',
             'nik' => 'required|string|unique:employees',
             'ktp_photo' => 'nullable|image|max:2048',
             'birth_place' => 'required|string|max:255',
@@ -75,6 +77,9 @@ class EmployeeController extends Controller
         ]);
 
         // Handle file uploads
+        if ($request->hasFile('profile_photo')) {
+            $validated['profile_photo'] = $request->file('profile_photo')->store('employees/profile', 'public');
+        }
         if ($request->hasFile('ktp_photo')) {
             $validated['ktp_photo'] = $request->file('ktp_photo')->store('employees/ktp', 'public');
         }
@@ -191,6 +196,7 @@ class EmployeeController extends Controller
     {
         $validated = $request->validate([
             'full_name' => 'required|string|max:255',
+            'profile_photo' => 'nullable|image|max:2048',
             'nik' => ['required', 'string', Rule::unique('employees')->ignore($employee->id)],
             'ktp_photo' => 'nullable|image|max:2048',
             'birth_place' => 'required|string|max:255',
@@ -220,6 +226,12 @@ class EmployeeController extends Controller
         ]);
 
         // Handle file uploads
+        if ($request->hasFile('profile_photo')) {
+            if ($employee->profile_photo) {
+                Storage::disk('public')->delete($employee->profile_photo);
+            }
+            $validated['profile_photo'] = $request->file('profile_photo')->store('employees/profile', 'public');
+        }
         if ($request->hasFile('ktp_photo')) {
             if ($employee->ktp_photo) {
                 Storage::disk('public')->delete($employee->ktp_photo);
@@ -248,6 +260,9 @@ class EmployeeController extends Controller
     public function destroy(Employee $employee)
     {
         // Delete associated files
+        if ($employee->profile_photo) {
+            Storage::disk('public')->delete($employee->profile_photo);
+        }
         if ($employee->ktp_photo) {
             Storage::disk('public')->delete($employee->ktp_photo);
         }
@@ -262,5 +277,20 @@ class EmployeeController extends Controller
 
         return redirect()->route('employees.index')
             ->with('success', 'Employee deleted successfully.');
+    }
+    
+    /**
+     * Check if employee is involved in any projects
+     */
+    public function checkProjects(Employee $employee)
+    {
+        // Check if employee is a submitter or initiator in any project
+        $involvedInProjects = Project::where('submitter_employee_id', $employee->id)
+            ->orWhere('initiator_employee_id', $employee->id)
+            ->exists();
+            
+        return response()->json([
+            'involved_in_projects' => $involvedInProjects
+        ]);
     }
 }

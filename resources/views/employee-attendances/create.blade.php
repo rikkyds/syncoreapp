@@ -161,7 +161,7 @@
                                 <select id="attendance_method" name="attendance_method" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
                                     <option value="">Pilih Metode</option>
                                     @foreach($attendanceMethods as $key => $method)
-                                        <option value="{{ $key }}" {{ old('attendance_method') == $key ? 'selected' : '' }}>
+                                        <option value="{{ $key }}" {{ old('attendance_method') == $key ? 'selected' : ($key == 'manual' ? 'selected' : '') }}>
                                             {{ $method }}
                                         </option>
                                     @endforeach
@@ -187,12 +187,12 @@
                                 <x-input-error class="mt-2" :messages="$errors->get('location_coordinates')" />
                             </div>
 
-                            <div>
+                            <div id="supervisor_verification_container" style="display: none;">
                                 <x-input-label for="supervisor_verification" value="Verifikasi Supervisor" />
                                 <select id="supervisor_verification" name="supervisor_verification" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                                     <option value="">Pilih Status Verifikasi</option>
                                     @foreach($supervisorVerifications as $key => $verification)
-                                        <option value="{{ $key }}" {{ old('supervisor_verification') == $key ? 'selected' : '' }}>
+                                        <option value="{{ $key }}" {{ old('supervisor_verification') == $key ? 'selected' : ($key == 'not_required' ? 'selected' : '') }}>
                                             {{ $verification }}
                                         </option>
                                     @endforeach
@@ -200,7 +200,7 @@
                                 <x-input-error class="mt-2" :messages="$errors->get('supervisor_verification')" />
                             </div>
 
-                            <div>
+                            <div id="verified_by_container" style="display: none;">
                                 <x-input-label for="verified_by" value="Diverifikasi Oleh" />
                                 <x-text-input id="verified_by" name="verified_by" type="text" class="mt-1 block w-full" :value="old('verified_by')" />
                                 <x-input-error class="mt-2" :messages="$errors->get('verified_by')" />
@@ -246,11 +246,46 @@
                 if (selectedEmployee) {
                     employeeNameInput.value = selectedEmployee.full_name;
                     nipNikInput.value = selectedEmployee.employee_id + ' / ' + selectedEmployee.nik;
+                    
+                    // Check if employee is involved in a project
+                    checkEmployeeProjects(selectedEmployee.id);
                 } else {
                     employeeNameInput.value = '';
                     nipNikInput.value = '';
+                    hideVerificationFields();
                 }
             });
+            
+            // Function to check if employee is involved in a project
+            function checkEmployeeProjects(employeeId) {
+                fetch(`/api/employee/${employeeId}/projects`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.involved_in_projects) {
+                            showVerificationFields();
+                        } else {
+                            hideVerificationFields();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error checking employee projects:', error);
+                        hideVerificationFields();
+                    });
+            }
+            
+            // Function to show verification fields
+            function showVerificationFields() {
+                document.getElementById('supervisor_verification_container').style.display = 'block';
+                document.getElementById('verified_by_container').style.display = 'block';
+            }
+            
+            // Function to hide verification fields
+            function hideVerificationFields() {
+                document.getElementById('supervisor_verification_container').style.display = 'none';
+                document.getElementById('verified_by_container').style.display = 'none';
+                document.getElementById('supervisor_verification').value = 'not_required';
+                document.getElementById('verified_by').value = '';
+            }
 
             // Calculate total hours, late minutes, and early departure
             function calculateAttendance() {

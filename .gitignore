@@ -17,6 +17,7 @@ yarn-error.log
 /.vscode
 .DS_Store
 Thumbs.db
+/blud3.2
 
 # Laravel specific
 /bootstrap/cache/*.php

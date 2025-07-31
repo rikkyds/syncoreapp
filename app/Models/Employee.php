@@ -13,6 +13,7 @@ class Employee extends Model
     protected $fillable = [
         // Personal Information
         'full_name',
+        'profile_photo',
         'nik',
         'ktp_photo',
         'birth_place',

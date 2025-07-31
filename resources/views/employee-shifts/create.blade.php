@@ -26,7 +26,9 @@
                                             required>
                                         <option value="">-- Pilih Karyawan --</option>
                                         @foreach($employees as $employee)
-                                            <option value="{{ $employee->id }}" {{ old('employee_id') == $employee->id ? 'selected' : '' }}>
+                                            <option value="{{ $employee->id }}" 
+                                                {{ old('employee_id') == $employee->id ? 'selected' : '' }}
+                                                {{ isset($selectedEmployee) && $selectedEmployee->id == $employee->id ? 'selected' : '' }}>
                                                 {{ $employee->full_name }} ({{ $employee->employee_id }})
                                             </option>
                                         @endforeach
@@ -148,29 +150,11 @@
                             </div>
                         </div>
 
-                        <!-- Informasi Kehadiran -->
+                        <!-- Informasi Tambahan -->
                         <div class="mb-8">
-                            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Informasi Kehadiran</h3>
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Informasi Tambahan</h3>
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label for="attendance_status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                        Status Kehadiran
-                                    </label>
-                                    <select name="attendance_status" id="attendance_status" 
-                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                                            required>
-                                        @foreach($attendanceStatuses as $key => $value)
-                                            <option value="{{ $key }}" {{ old('attendance_status', 'hadir') == $key ? 'selected' : '' }}>
-                                                {{ $value }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error('attendance_status')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
                                 <div>
                                     <label for="work_day_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                                         Jenis Hari Kerja
@@ -189,7 +173,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="md:col-span-2">
+                                <div>
                                     <label for="supervisor_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                                         Nama Atasan/PIC
                                     </label>
@@ -204,11 +188,7 @@
                             </div>
                         </div>
 
-                        <!-- Informasi Tambahan -->
-                        <div class="mb-8">
-                            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Informasi Tambahan</h3>
-                            
-                            <div>
+                            <div class="mt-4">
                                 <label for="shift_notes" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                                     Catatan Shift
                                 </label>
@@ -239,8 +219,8 @@
     </div>
 
     <script>
-        document.getElementById('employee_id').addEventListener('change', function() {
-            const employeeId = this.value;
+        // Function to load employee data
+        function loadEmployeeData(employeeId) {
             if (employeeId) {
                 fetch(`/employees/${employeeId}/shift-data`)
                     .then(response => response.json())
@@ -255,6 +235,19 @@
             } else {
                 document.getElementById('employee_name').value = '';
                 document.getElementById('nip_nik').value = '';
+            }
+        }
+        
+        // Load employee data on change
+        document.getElementById('employee_id').addEventListener('change', function() {
+            loadEmployeeData(this.value);
+        });
+        
+        // Load initial employee data if pre-selected
+        document.addEventListener('DOMContentLoaded', function() {
+            const employeeSelect = document.getElementById('employee_id');
+            if (employeeSelect.value) {
+                loadEmployeeData(employeeSelect.value);
             }
         });
     </script>

@@ -10,30 +10,43 @@ use Carbon\Carbon;
 
 class EmployeeShiftController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $shifts = EmployeeShift::with('employee')
+        $query = EmployeeShift::with('employee')
             ->orderBy('shift_date', 'desc')
-            ->orderBy('start_time', 'asc')
-            ->paginate(10);
+            ->orderBy('start_time', 'asc');
+            
+        // Filter by employee if employee_id is provided
+        if ($request->has('employee_id')) {
+            $query->where('employee_id', $request->employee_id);
+        }
+        
+        $shifts = $query->paginate(10);
         
         return view('employee-shifts.index', compact('shifts'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $employees = Employee::select('id', 'full_name', 'employee_id', 'nik')->get();
         $shiftNames = EmployeeShift::getShiftNameOptions();
-        $attendanceStatuses = EmployeeShift::getAttendanceStatusOptions();
         $workDayTypes = EmployeeShift::getWorkDayTypeOptions();
         $workLocations = BranchOffice::select('id', 'name')->get();
+        
+        // Pre-select employee if employee_id is provided
+        $selectedEmployeeId = $request->input('employee_id');
+        $selectedEmployee = null;
+        
+        if ($selectedEmployeeId) {
+            $selectedEmployee = Employee::find($selectedEmployeeId);
+        }
         
         return view('employee-shifts.create', compact(
             'employees', 
             'shiftNames', 
-            'attendanceStatuses', 
             'workDayTypes',
-            'workLocations'
+            'workLocations',
+            'selectedEmployee'
         ));
     }
 
@@ -48,11 +61,13 @@ class EmployeeShiftController extends Controller
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i',
             'work_location' => 'required|string|max:255',
-            'attendance_status' => 'required|in:hadir,izin,sakit,alpha,terlambat,pulang_cepat',
             'work_day_type' => 'required|in:hari_biasa,akhir_pekan,hari_libur,lembur,hari_khusus',
             'supervisor_name' => 'required|string|max:255',
             'shift_notes' => 'nullable|string',
         ]);
+        
+        // Set default attendance status to 'hadir'
+        $validated['attendance_status'] = 'hadir';
 
         // Calculate shift duration
         $startTime = Carbon::parse($validated['start_time']);
@@ -82,7 +97,6 @@ class EmployeeShiftController extends Controller
     {
         $employees = Employee::select('id', 'full_name', 'employee_id', 'nik')->get();
         $shiftNames = EmployeeShift::getShiftNameOptions();
-        $attendanceStatuses = EmployeeShift::getAttendanceStatusOptions();
         $workDayTypes = EmployeeShift::getWorkDayTypeOptions();
         $workLocations = BranchOffice::select('id', 'name')->get();
         
@@ -90,7 +104,6 @@ class EmployeeShiftController extends Controller
             'employeeShift',
             'employees', 
             'shiftNames', 
-            'attendanceStatuses', 
             'workDayTypes',
             'workLocations'
         ));
@@ -107,11 +120,13 @@ class EmployeeShiftController extends Controller
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i',
             'work_location' => 'required|string|max:255',
-            'attendance_status' => 'required|in:hadir,izin,sakit,alpha,terlambat,pulang_cepat',
             'work_day_type' => 'required|in:hari_biasa,akhir_pekan,hari_libur,lembur,hari_khusus',
             'supervisor_name' => 'required|string|max:255',
             'shift_notes' => 'nullable|string',
         ]);
+        
+        // Preserve existing attendance status
+        $validated['attendance_status'] = $employeeShift->attendance_status;
 
         // Calculate shift duration
         $startTime = Carbon::parse($validated['start_time']);
@@ -187,11 +202,13 @@ class EmployeeShiftController extends Controller
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i',
             'work_location' => 'required|string|max:255',
-            'attendance_status' => 'required|in:hadir,izin,sakit,alpha,terlambat,pulang_cepat',
             'work_day_type' => 'required|in:hari_biasa,akhir_pekan,hari_libur,lembur,hari_khusus',
             'supervisor_name' => 'required|string|max:255',
             'shift_notes' => 'nullable|string',
         ]);
+        
+        // Set default attendance status
+        $attendance_status = 'hadir';
 
         // Calculate shift duration
         $startTime = Carbon::parse($validated['start_time']);
@@ -216,7 +233,7 @@ class EmployeeShiftController extends Controller
                 'end_time' => $validated['end_time'],
                 'shift_duration' => $shiftDuration,
                 'work_location' => $validated['work_location'],
-                'attendance_status' => $validated['attendance_status'],
+                'attendance_status' => $attendance_status,
                 'work_day_type' => $validated['work_day_type'],
                 'supervisor_name' => $validated['supervisor_name'],
                 'shift_notes' => $validated['shift_notes'],

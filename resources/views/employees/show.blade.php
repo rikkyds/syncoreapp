@@ -40,8 +40,8 @@
             <div class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl shadow-lg p-6 text-white">
                 <div class="flex items-center space-x-6">
                     <div class="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center">
-                        @if($employee->ktp_photo)
-                            <img src="{{ Storage::url($employee->ktp_photo) }}" alt="Foto {{ $employee->full_name }}" 
+                        @if($employee->profile_photo)
+                            <img src="{{ asset('storage/' . $employee->profile_photo) }}" alt="Foto {{ $employee->full_name }}" 
                                  class="w-20 h-20 rounded-full object-cover">
                         @else
                             <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -125,6 +125,15 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                                 </svg>
                                 Keluarga
+                            </div>
+                        </button>
+                        <button onclick="showTab('shifts')" id="tab-shifts" 
+                                class="tab-button border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 py-4 px-1 text-sm font-medium">
+                            <div class="flex items-center">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Shift Kerja
                             </div>
                         </button>
                     </nav>
@@ -290,14 +299,14 @@
                                         @if($employee->bpjs_health_photo)
                                             <div>
                                                 <p class="text-xs text-gray-500 mb-1">Kartu BPJS Kesehatan</p>
-                                                <img src="{{ Storage::url($employee->bpjs_health_photo) }}" alt="BPJS Kesehatan" 
+                                                <img src="{{ asset('storage/' . $employee->bpjs_health_photo) }}" alt="BPJS Kesehatan" 
                                                      class="w-full h-20 object-cover rounded-lg border">
                                             </div>
                                         @endif
                                         @if($employee->npwp_photo)
                                             <div>
                                                 <p class="text-xs text-gray-500 mb-1">Kartu NPWP</p>
-                                                <img src="{{ Storage::url($employee->npwp_photo) }}" alt="NPWP" 
+                                                <img src="{{ asset('storage/' . $employee->npwp_photo) }}" alt="NPWP" 
                                                      class="w-full h-20 object-cover rounded-lg border">
                                             </div>
                                         @endif
@@ -509,6 +518,111 @@
 
                     <!-- Family Tab -->
                     <div id="content-family" class="tab-content hidden">
+                    
+                    <!-- Shifts Tab -->
+                    <div id="content-shifts" class="tab-content hidden">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Jadwal Shift Kerja</h3>
+                            <a href="{{ route('employee-shifts.create') }}" class="inline-flex items-center px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white font-medium rounded-lg transition-colors duration-200">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                Tambah Shift Baru
+                            </a>
+                        </div>
+
+                        @php
+                            $shifts = $employee->shifts()->orderBy('shift_date', 'desc')->take(10)->get();
+                        @endphp
+
+                        @if($shifts->count() > 0)
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                    <thead class="bg-gray-50 dark:bg-gray-700">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                Tanggal
+                                            </th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                Shift
+                                            </th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                Jam Kerja
+                                            </th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                Durasi
+                                            </th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                Status
+                                            </th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                Aksi
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                        @foreach($shifts as $shift)
+                                            <tr>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="text-sm font-medium text-gray-900 dark:text-white">
+                                                        {{ $shift->shift_date->format('d/m/Y') }}
+                                                    </div>
+                                                    <div class="text-sm text-gray-500 dark:text-gray-400">
+                                                        {{ $shift->shift_date->format('l') }}
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="text-sm font-medium text-gray-900 dark:text-white">
+                                                        {{ $shift->shift_name }}
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900 dark:text-white">
+                                                        {{ $shift->formatted_start_time }} - {{ $shift->formatted_end_time }}
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900 dark:text-white">
+                                                        {{ $shift->formatted_shift_duration }}
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $shift->attendance_status_badge_class }}">
+                                                        {{ $shift->attendance_status_name }}
+                                                    </span>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                    <a href="{{ route('employee-shifts.show', $shift) }}" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 mr-3">
+                                                        Lihat
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="mt-4 text-right">
+                                <a href="{{ route('employee-shifts.index') }}?employee_id={{ $employee->id }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 text-sm font-medium">
+                                    Lihat Semua Shift →
+                                </a>
+                            </div>
+                        @else
+                            <div class="text-center py-8">
+                                <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <p class="text-gray-500 dark:text-gray-400">Belum ada data shift kerja</p>
+                                <div class="mt-4">
+                                    <a href="{{ route('employee-shifts.create') }}?employee_id={{ $employee->id }}" class="inline-flex items-center px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white font-medium rounded-lg transition-colors duration-200">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                        </svg>
+                                        Tambah Shift Pertama
+                                    </a>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
                         <div class="flex justify-between items-center mb-6">
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Data Keluarga</h3>
                             <a href="{{ route('employees.family-members.create', $employee) }}" class="inline-flex items-center px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white font-medium rounded-lg transition-colors duration-200">
