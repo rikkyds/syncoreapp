@@ -193,6 +193,12 @@ Route::middleware(['auth'])->group(function () {
             return view('karyawan.dashboard');
         });
     });
+    
+    // Employee Attendance Portal Routes - Accessible by both admin and karyawan
+    Route::middleware(['auth', 'role:admin,karyawan'])->group(function () {
+        Route::get('/attendance-portal', [App\Http\Controllers\EmployeeAttendancePortalController::class, 'index'])
+            ->name('attendance-portal.index');
+    });
 
     // Regular user routes
     Route::middleware(['role:user'])->group(function () {
